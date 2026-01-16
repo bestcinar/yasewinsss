@@ -1,190 +1,56 @@
-<!DOCTYPE html><html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Benimle Çıkar mısın? 💖</title>
-  <style>
-    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
-    body {
-      min-height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, #ffe6f0, #fff5fa);
-    }
-    .card {
-      width: min(420px, 92vw);
-      background: #ffffffcc; backdrop-filter: blur(6px);
-      border-radius: 24px; padding: 24px; box-shadow: 0 20px 40px rgba(0,0,0,.1);
-      text-align: center;
-    }
-    h1 { margin: 8px 0 6px; font-size: 26px; }
-    p { margin: 6px 0 16px; color: #555; }
-    .buttons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
-    button {
-      border: none; border-radius: 999px; padding: 14px 10px; font-size: 16px; cursor: pointer;
-      box-shadow: 0 8px 16px rgba(0,0,0,.12); transition: transform .12s ease, box-shadow .12s ease;
-    }
-    button:hover { transform: translateY(-1px); box-shadow: 0 10px 18px rgba(0,0,0,.16); }
-    .yes { background: #3ddc84; color: #0b3b22; }
-    .no { background: #ff6b6b; color: #4b0f0f; }
-    .maybe { background: #ffd166; color: #5a4200; }.soft { background: #ffd6e7; color: #6b1e45; }
-.hidden { display: none; }
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const nameInput = document.getElementById("nameInput");
+  const startBtn = document.getElementById("startBtn");
+  const questionArea = document.getElementById("questionArea");
+  const questionText = document.getElementById("questionText");
+  const resultScreen = document.getElementById("resultScreen");
+  const happyScreen = document.getElementById("happyScreen");
 
-.ribbon { font-size: 42px; margin: 10px 0; }
-.yupi { font-size: 30px; margin: 6px 0; }
+  const questions = [
+    "Emin misin? 🤍",
+    "Gerçekten kesin mi?",
+    "Bir daha düşünmek ister misin?",
+    "Kalbini dinledin mi? 💗",
+    "Bence evet demek istiyorsun 😌",
+    "Ee… sevgili mi olsak?"
+  ];
 
-.questions { margin-top: 10px; }
-.q { font-weight: 600; }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
-.card { animation: fadeUp .4s ease; }
-.heart {
-  position: fixed; bottom: -20px; font-size: 18px; opacity: .8;
-  animation: float 3.5s linear forwards;
-}
-@keyframes float { to { transform: translateY(-120vh); opacity: 0; } }
+  let currentQuestion = 0;
 
-  </style>
-</head>
-<body onclick="secretTap()">
-  <div class="card" id="step-name">
-    <h1>Hoş geldin 💕</h1>
-    <p>Adını yazar mısın?</p>
-    <input id="nameInput" placeholder="İsmin..." style="padding:12px 14px;border-radius:14px;border:1px solid #ddd;width:100%;font-size:16px;" />
-    <div class="buttons" style="grid-template-columns:1fr;margin-top:12px;">
-      <button class="soft" onclick="saveName()">Devam et 💗</button>
-    </div>
-  </div>  <div class="card hidden" id="step-main">
-    <h1>Benimle çıkar mısın? 💕</h1>
-    <p>Kalpten bir soru…</p>
-    <div class="buttons">
-      <button class="yes" onclick="onYes()">Evet</button>
-      <button class="no" onclick="onNo()">Hayır</button>
-      <button class="maybe" onclick="onMaybe()">Bilmem ki</button>
-    </div>
-  </div>  <div class="card hidden" id="step-confirm">
-    <h1>Ciddi misin? 🥹</h1>
-    <p>Son bir kez…</p>
-    <div class="buttons" style="grid-template-columns: 1fr;">
-      <button class="soft" onclick="showYupi()">Valla 💗</button>
-    </div>
-  </div>  <div class="card hidden" id="step-questions">
-    <h1>Benimle çıkar mısın? 💕</h1>
-    <p class="q" id="questionText"></p>
-    <div class="buttons questions">
-      <button class="yes" onclick="answer()">Evet</button>
-      <button class="no" onclick="answer()">Hayır</button>
-      <button class="maybe" onclick="answer()">Bilmem ki</button>
-    </div>
-  </div>
-  </div><div class="card hidden" id="step-admin">
-<h1>Gizli Liste 🔐</h1>
-<p>Şifreyi gir</p>
-<input id="adminPass" type="password" placeholder="Şifre" style="padding:12px 14px;border-radius:14px;border:1px solid #ddd;width:100%;font-size:16px;" />
-<div class="buttons" style="grid-template-columns:1fr;margin-top:12px;">
-  <button class="soft" onclick="showNames()">Göster 💗</button>
-</div>
-<p id="namesList" style="margin-top:12px;"></p>
+  // Başlangıçta gizle
+  questionArea.style.display = "none";
+  happyScreen.style.display = "none";
 
-  </div>  <div class="card hidden" id="step-yupi">
-    <div class="ribbon">🎀</div>
-    <div class="yupi">Bende senden çok hoşlanıyorum 💕</div>
-    <p>Şimdi sevgili mi oluyoz? 🥰</p>
-  </div>
-    <div class="yupi">YUPİİİİ! 🥰</div>
-    <p>Çok mutluyum! 💖</p>
-  </div>  <script>
-    function spawnHearts() {
-      for (let i = 0; i < 18; i++) {
-        const h = document.createElement('div');
-        h.className = 'heart';
-        h.textContent = '💗';
-        h.style.left = Math.random() * 100 + 'vw';
-        h.style.animationDelay = (Math.random() * .8) + 's';
-        document.body.appendChild(h);
-        setTimeout(() => h.remove(), 4000);
-      }
-    }
-    let currentName = '';
-    let tapCount = 0;
+  startBtn.addEventListener("click", () => {
+    if (nameInput.value.trim() === "") return alert("İsmini yazmalısın 💌");
 
-    const questions = [
-      'Emin misin? 💕',
-      'Kesin kararın mı? 😳',
-      'Kalbin ne diyor? 💓',
-      'Bir şans verir misin? ✨',
-      'Gerçekten mi? 🥹',
-      'Son cevabın bu mu? 💖'
-    ];
-    let qi = 0;
+    localStorage.setItem("visitorName", nameInput.value);
+    currentQuestion = 0;
+    questionText.innerText = questions[currentQuestion];
+    questionArea.style.display = "block";
+  });
 
-    function show(id) {
-      document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
-    }
-
-    function saveName() {
-      const input = document.getElementById('nameInput').value.trim();
-      if (!input) return alert('İsmini yaz lütfen 💕');
-      currentName = input;
-      let names = JSON.parse(localStorage.getItem('names') || '[]');
-      names.push(input);
-      localStorage.setItem('names', JSON.stringify(names));
-      document.querySelector('#step-main h1').textContent = `${currentName}, benimle çıkar mısın? 💕`;
-      show('step-main');
-    }
-
-    function show(id) {
-      document.querySelectorAll('.card').forEach(c => c.classList.add('hidden'));
-      document.getElementById(id).classList.remove('hidden');
-    }
-
-    function onYes() { show('step-confirm'); }
-
-    function onNo() {
-      qi = 0;
-      document.getElementById('questionText').textContent = questions[qi];
-      show('step-questions');
-    }
-
-    function onMaybe() {
-      qi = 0;
-      document.getElementById('questionText').textContent = questions[qi];
-      show('step-questions');
-    }
-
-    function answer() {
-      qi++;
-      if (qi < questions.length) {
-        document.getElementById('questionText').textContent = questions[qi];
-      } else {
-        // 6 soru bittikten sonra özel pembe buton
-        document.querySelector('#step-questions .buttons').innerHTML = `
-          <button class="soft" onclick="showYupi()">Ee… sevgili mi olsak? 💞</button>
-        `;
-      }
+  window.answer = () => {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+      questionText.innerText = questions[currentQuestion];
     } else {
-        show('step-yupi');
+      questionArea.style.display = "none";
+      happyScreen.style.display = "block";
+    }
+  };
+
+  // Gizli admin alanı
+  let clickCount = 0;
+  document.body.addEventListener("click", () => {
+    clickCount++;
+    if (clickCount === 5) {
+      const pass = prompt("Şifre?");
+      if (pass === "4575") {
+        alert("Kayıtlı isim: " + localStorage.getItem("visitorName"));
       }
     }
-
-    function showYupi() { show('step-yupi'); spawnHearts(); }
-
-    function showNames() {
-      const pass = document.getElementById('adminPass').value;
-      if (pass !== '4575') return alert('Şifre yanlış 😅');
-      const names = JSON.parse(localStorage.getItem('names') || '[]');
-      document.getElementById('namesList').textContent = names.length
-        ? names.join(', ')
-        : 'Henüz kimse girmedi 😌';
-    }
-
-    function showAdmin() { show('step-admin'); }
-
-    function secretTap() {
-      tapCount++;
-      if (tapCount === 5) {
-        tapCount = 0;
-        showAdmin();
-      }
-      setTimeout(() => tapCount = 0, 1500);
-    } { show('step-yupi'); spawnHearts(); }
-  </script></body>
-</html>
+  });
+});
+</script>
