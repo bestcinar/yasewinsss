@@ -44,6 +44,25 @@
     }
     @keyframes float{to{transform:translateY(-120vh);opacity:0}}
     @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+    /* TASARIMCI */
+    .designer{
+      position:fixed;
+      right:14px;
+      bottom:14px;
+      text-align:right;
+      font-size:13px;
+      color:#666;
+      z-index:999;
+    }
+    .designer img{
+      width:26px;
+      margin-top:6px;
+      transition:transform .2s ease;
+    }
+    .designer img:hover{
+      transform:scale(1.2);
+    }
   </style>
 </head>
 
@@ -82,10 +101,8 @@
 <div class="card hidden" id="step-questions">
   <h1>Benimle çıkar mısın? 💕</h1>
   <p id="questionText"></p>
-  <div class="buttons">
-    <button class="yes" onclick="answer()">Evet</button>
-    <button class="no" onclick="answer()">Hayır</button>
-    <button class="maybe" onclick="answer()">Bilmem ki</button>
+  <div class="buttons" style="grid-template-columns:1fr">
+    <button class="soft" onclick="answer()">Belki bir şans verebilirim 💗</button>
   </div>
 </div>
 
@@ -104,6 +121,14 @@
     <button class="soft" onclick="showNames()">Göster 💗</button>
   </div>
   <p id="namesList"></p>
+</div>
+
+<!-- TASARIMCI -->
+<div class="designer">
+  <div>Tasarımcı : <strong>Muhammet Çınar Sağ</strong></div>
+  <a href="https://www.instagram.com/best_cinar?igsh=MTNpbjE1bTQ4bDZwMg==" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
+  </a>
 </div>
 
 <script>
