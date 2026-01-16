@@ -27,6 +27,7 @@ body::before{
   transform:scale(1.05);
   z-index:-1;
 }
+
 .card{
   width:min(420px,92vw);
   background:#ffffffcc;
@@ -59,7 +60,27 @@ button:hover{transform:scale(1.05);}
 .designer img:hover{transform:scale(1.2);}
 
 #refCode{
-  position:fixed;left:14px;bottom:14px;text-align:left;font-size:13px;color:#fff;z-index:999;
+  position:fixed;
+  top:14px;
+  right:14px;
+  display:flex;
+  gap:4px;
+  z-index:999;
+}
+#refCode input{
+  width:60px;
+  padding:4px 6px;
+  border-radius:8px;
+  border:1px solid #ddd;
+  font-size:12px;
+}
+#refCode button{
+  background:#ffd6e7;
+  border:none;
+  border-radius:8px;
+  padding:4px 6px;
+  font-size:12px;
+  cursor:pointer;
 }
 
 #specialMsg{
@@ -119,7 +140,7 @@ button:hover{transform:scale(1.05);}
   <h1>Benimle çıkar mısın? 💕</h1>
   <p id="questionText"></p>
   <div class="buttons" style="grid-template-columns:1fr">
-    <button onclick="answer()">Belki bir şans verebilirim 💗</button>
+    <button onclick="nextQuestion()">Belki bir şans verebilirim 💗</button>
   </div>
 </div>
 
@@ -145,9 +166,10 @@ button:hover{transform:scale(1.05);}
   </a>
 </div>
 
+<!-- REFERANS -->
 <div id="refCode">
-  <input id="refInput" placeholder="Referans kodu...">
-  <button onclick="checkRef()">Gönder</button>
+  <input id="refInput" placeholder="">
+  <button onclick="checkRef()">→</button>
 </div>
 
 <div id="specialMsg">I 🩷 U YASEM</div>
@@ -174,10 +196,18 @@ function saveName(){
   show("step-main");
 }
 
-function onYes(){show("step-confirm")}
-function onNo(){qi=0;questionText.textContent=questions[qi];show("step-questions")}
-function onMaybe(){onNo()}
-function answer(){qi++;qi<questions.length?questionText.textContent=questions[qi]:showYupi();}
+function onYes(){showYupi();}
+function onNo(){qi=0;questionText.textContent=questions[qi];show("step-questions");}
+function onMaybe(){onNo();}
+
+function nextQuestion(){
+  qi++;
+  if(qi<questions.length){
+    questionText.textContent=questions[qi];
+  }else{
+    showYupi();
+  }
+}
 
 function showYupi(){
   show("step-yupi");
