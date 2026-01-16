@@ -1,129 +1,143 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Benimle Çıkar mısın? 💖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Benimle Çıkar mısın? 💖</title>
 
-  <style>
-    *{box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif}
-    body{
-      min-height:100vh;margin:0;display:flex;align-items:center;justify-content:center;
-      background:linear-gradient(135deg,#ffe6f0,#fff5fa)
-    }
-    .card{
-      width:min(420px,92vw);
-      background:#ffffffcc;backdrop-filter:blur(6px);
-      border-radius:24px;padding:24px;text-align:center;
-      box-shadow:0 20px 40px rgba(0,0,0,.1);
-      animation:fadeUp .4s ease
-    }
-    .hidden{display:none}
-    h1{margin:8px 0;font-size:26px}
-    p{margin:6px 0 16px;color:#555}
-    input{
-      width:100%;padding:12px 14px;border-radius:14px;
-      border:1px solid #ddd;font-size:16px
-    }
-    .buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    button{
-      border:none;border-radius:999px;padding:14px 10px;
-      font-size:16px;cursor:pointer;
-      box-shadow:0 8px 16px rgba(0,0,0,.12)
-    }
-    .yes{background:#3ddc84}
-    .no{background:#ff6b6b}
-    .maybe{background:#ffd166}
-    .soft{background:#ffd6e7}
-    .ribbon{font-size:42px}
-    .yupi{font-size:28px}
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',system-ui,-apple-system,sans-serif;margin:0;padding:0}
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  position:relative;
+  overflow:hidden;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:url("https://drive.google.com/uc?export=view&id=1LOSj7-6pQpZpkSUV6CGUThwFhNFmYXv8");
+  background-size:cover;
+  background-position:center;
+  filter:blur(8px) brightness(.75);
+  transform:scale(1.05);
+  z-index:-1;
+}
+.card{
+  width:min(420px,92vw);
+  background:#ffffffcc;
+  backdrop-filter:blur(6px);
+  border-radius:24px;
+  padding:24px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,.1);
+  animation:fadeUp .4s ease;
+}
+.hidden{display:none;}
+h1{margin:8px 0;font-size:26px;animation:fadeText 1s ease;}
+p{margin:6px 0 16px;color:#555;animation:fadeText 1s ease;}
+input{width:100%;padding:12px 14px;border-radius:14px;border:1px solid #ddd;font-size:16px;}
+.buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+button{
+  border:none;border-radius:999px;padding:14px 10px;font-size:16px;cursor:pointer;
+  box-shadow:0 8px 16px rgba(0,0,0,.12);
+  transition:transform .2s;
+}
+button:hover{transform:scale(1.05);}
+.yupi{font-size:28px;animation:fadeText 1s ease;}
+.ribbon{font-size:42px;}
+.heart{position:fixed;bottom:-20px;font-size:18px;opacity:.8;animation:float 3.5s linear forwards}
 
-    .heart{
-      position:fixed;bottom:-20px;font-size:18px;opacity:.8;
-      animation:float 3.5s linear forwards
-    }
-    @keyframes float{to{transform:translateY(-120vh);opacity:0}}
-    @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.designer{
+  position:fixed;right:14px;bottom:14px;text-align:right;font-size:13px;color:#666;z-index:999;
+}
+.designer img{width:26px;margin-top:6px;transition:transform .2s ease;}
+.designer img:hover{transform:scale(1.2);}
 
-    /* TASARIMCI */
-    .designer{
-      position:fixed;
-      right:14px;
-      bottom:14px;
-      text-align:right;
-      font-size:13px;
-      color:#666;
-      z-index:999;
-    }
-    .designer img{
-      width:26px;
-      margin-top:6px;
-      transition:transform .2s ease;
-    }
-    .designer img:hover{
-      transform:scale(1.2);
-    }
-  </style>
+#refCode{
+  position:fixed;left:14px;bottom:14px;text-align:left;font-size:13px;color:#fff;z-index:999;
+}
+
+#specialMsg{
+  position:fixed;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) scale(0);
+  font-size:36px;
+  color:#ff2d95;
+  text-shadow:0 0 12px #ff2d95,0 0 24px #ff2d95;
+  font-weight:bold;
+  z-index:9999;
+  pointer-events:none;
+  animation:none;
+}
+
+@keyframes float{to{transform:translateY(-120vh);opacity:0}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeText{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{
+  0%{transform:translate(-50%,-50%) scale(0);}
+  50%{transform:translate(-50%,-50%) scale(1.2);}
+  100%{transform:translate(-50%,-50%) scale(1);}
+}
+</style>
 </head>
 
 <body onclick="secretTap()">
 
-<!-- İSİM -->
 <div class="card" id="step-name">
   <h1>Hoş geldin 💕</h1>
   <p>Adını yazar mısın?</p>
   <input id="nameInput" placeholder="İsmin...">
   <div class="buttons" style="grid-template-columns:1fr;margin-top:12px">
-    <button class="soft" onclick="saveName()">Devam et 💗</button>
+    <button onclick="saveName()">Devam et 💗</button>
   </div>
 </div>
 
-<!-- ANA SORU -->
 <div class="card hidden" id="step-main">
   <h1>Benimle çıkar mısın? 💕</h1>
   <p>Kalpten bir soru…</p>
   <div class="buttons">
-    <button class="yes" onclick="onYes()">Evet</button>
-    <button class="no" onclick="onNo()">Hayır</button>
-    <button class="maybe" onclick="onMaybe()">Bilmem ki</button>
+    <button onclick="onYes()">Evet</button>
+    <button onclick="onNo()">Hayır</button>
+    <button onclick="onMaybe()">Bilmem ki</button>
   </div>
 </div>
 
-<!-- EVET ONAY -->
 <div class="card hidden" id="step-confirm">
   <h1>Ciddi misin? 🥹</h1>
   <div class="buttons" style="grid-template-columns:1fr">
-    <button class="soft" onclick="showYupi()">Valla 💗</button>
+    <button onclick="showYupi()">Valla 💗</button>
   </div>
 </div>
 
-<!-- SORULAR -->
 <div class="card hidden" id="step-questions">
   <h1>Benimle çıkar mısın? 💕</h1>
   <p id="questionText"></p>
   <div class="buttons" style="grid-template-columns:1fr">
-    <button class="soft" onclick="answer()">Belki bir şans verebilirim 💗</button>
+    <button onclick="answer()">Belki bir şans verebilirim 💗</button>
   </div>
 </div>
 
-<!-- SON -->
 <div class="card hidden" id="step-yupi">
   <div class="ribbon">🎀</div>
   <div class="yupi">Bende senden çok hoşlanıyorum 💕</div>
   <p>Şimdi sevgili mi oluyoz? 🥰</p>
 </div>
 
-<!-- ADMIN -->
 <div class="card hidden" id="step-admin">
   <h1>Gizli Liste 🔐</h1>
   <input id="adminPass" type="password" placeholder="Şifre">
   <div class="buttons" style="grid-template-columns:1fr;margin-top:12px">
-    <button class="soft" onclick="showNames()">Göster 💗</button>
+    <button onclick="showNames()">Göster 💗</button>
   </div>
   <p id="namesList"></p>
 </div>
 
-<!-- TASARIMCI -->
 <div class="designer">
   <div>Tasarımcı : <strong>Muhammet Çınar Sağ</strong></div>
   <a href="https://www.instagram.com/best_cinar?igsh=MTNpbjE1bTQ4bDZwMg==" target="_blank">
@@ -131,15 +145,18 @@
   </a>
 </div>
 
+<div id="refCode">
+  <input id="refInput" placeholder="Referans kodu...">
+  <button onclick="checkRef()">Gönder</button>
+</div>
+
+<div id="specialMsg">I 🩷 U YASEM</div>
+
 <script>
 let tapCount=0, qi=0;
 const questions=[
-  "Emin misin? 💕",
-  "Kesin kararın mı? 😳",
-  "Kalbin ne diyor? 💓",
-  "Bir şans verir misin? ✨",
-  "Gerçekten mi? 🥹",
-  "Ee… sevgili mi olsak? 💞"
+  "Emin misin? 💕","Kesin kararın mı? 😳","Kalbin ne diyor? 💓",
+  "Bir şans verir misin? ✨","Gerçekten mi? 🥹","Ee… sevgili mi olsak? 💞"
 ];
 
 function show(id){
@@ -160,15 +177,7 @@ function saveName(){
 function onYes(){show("step-confirm")}
 function onNo(){qi=0;questionText.textContent=questions[qi];show("step-questions")}
 function onMaybe(){onNo()}
-
-function answer(){
-  qi++;
-  if(qi<questions.length){
-    questionText.textContent=questions[qi];
-  }else{
-    showYupi();
-  }
-}
+function answer(){qi++;qi<questions.length?questionText.textContent=questions[qi]:showYupi();}
 
 function showYupi(){
   show("step-yupi");
@@ -191,6 +200,20 @@ function showNames(){
   if(adminPass.value!=="yasemin") return alert("Şifre yanlış");
   const names=JSON.parse(localStorage.getItem("names")||"[]");
   namesList.textContent=names.length?names.join(", "):"Henüz yok";
+}
+
+function checkRef(){
+  if(refInput.value.trim().toLowerCase()==="yasem"){
+    const msg=document.getElementById("specialMsg");
+    msg.style.animation="pulse 1.5s ease forwards";
+    for(let i=0;i<20;i++){
+      const h=document.createElement("div");
+      h.className="heart";h.textContent="💗";
+      h.style.left=Math.random()*100+"vw";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),3500);
+    }
+  }else alert("Kod yanlış 😅");
 }
 </script>
 
