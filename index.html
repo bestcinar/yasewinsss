@@ -188,7 +188,7 @@ function secretTap(){
 }
 
 function showNames(){
-  if(adminPass.value!=="4575") return alert("Şifre yanlış");
+  if(adminPass.value!=="yasemin") return alert("Şifre yanlış");
   const names=JSON.parse(localStorage.getItem("names")||"[]");
   namesList.textContent=names.length?names.join(", "):"Henüz yok";
 }
